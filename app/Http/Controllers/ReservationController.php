@@ -14,11 +14,10 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        $reservations=ReservationService::getReservations();
+        $reservations = ReservationService::getReservations();
 
-        if(!$reservations){
-            return response()->json(['message'=>'error',404]);
-
+        if (!$reservations) {
+            return response()->json(['message' => 'error', 404]);
         }
         return response()->json($reservations);
     }
@@ -26,14 +25,22 @@ class ReservationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    // public function show($id)
+    // {
+    //     $reserve = ReservationService::getReserve($id);
+    //     if (!$reserve) {
+    //         return response()->json(['message' => 'error', 400]);
+    //     }
+    //     return response()->json($reserve);
+    // }
     public function store(ReservationRequest $request)
     {
-       $reservation= ReservationService::create($request->validated());
+        $reservation = ReservationService::create($request->validated());
 
-         if(!$reservation){
-            return response()->json(['message'=>'error',400]);
+        if (!$reservation) {
+            return response()->json(['message' => 'error', 400]);
         }
-                return response()->json($reservation);
+        return response()->json($reservation);
     }
 
 
@@ -43,9 +50,9 @@ class ReservationController extends Controller
      */
     public function update(ReservationRequest $data, reservation $reservation)
     {
-        $reservation = ReservationService::updateReservation($reservation , $data->validated());
-        if(!$reservation){
-            return response()->json(['message'=>'error',400]);
+        $reservation = ReservationService::updateReservation($reservation, $data->validated());
+        if (!$reservation) {
+            return response()->json(['message' => 'error', 400]);
         }
         return response()->json($reservation);
     }
@@ -55,10 +62,10 @@ class ReservationController extends Controller
      */
     public function destroy(reservation $reservation)
     {
-        $reserveDelete= ReservationService::deleteReservation($reservation);
+        $reserveDelete = ReservationService::deleteReservation($reservation);
 
-        if(!$reserveDelete){
-            return response()->json(['message'=>'error',400]);
+        if (!$reserveDelete) {
+            return response()->json(['message' => 'error', 400]);
         }
         return response()->json($reserveDelete);
     }

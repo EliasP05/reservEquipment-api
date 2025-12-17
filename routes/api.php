@@ -18,3 +18,4 @@ Route::get('/equipmentavailable', [EquipmentController::class, 'getAvailable']);
 
 Route::PUT('/reservation/{reservation}/activate', [ReservationDetailsController::class, 'store']);
 Route::PUT('/reservation/{reservation}/end', [ReservationDetailsController::class, 'end']);
+// Route::GET('/reservation/{id}', [ReservationController::class, 'show']);

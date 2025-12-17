@@ -14,6 +14,11 @@ class ReservationService
         $reservations = Reservation::with('user', 'details.equipment')->get();
         return $reservations;
     }
+    public static function getReserve($id)
+    {
+        $reserve = Reservation::with('user', 'details.equipment')->find($id);
+        return $reserve;
+    }
     public static function getReservationsForId($id)
     {
         $details = ReservationDetails::where('reserv_id', $id);

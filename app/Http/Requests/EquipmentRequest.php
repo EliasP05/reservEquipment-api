@@ -23,12 +23,10 @@ class EquipmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
-            'name'=>'required',
-            'detalle'=>'required',
-            'cantidad'=>'required'
-        ];
 
-        
+            'name' => 'required',
+            'detalle' => 'required',
+            'cantidad' => 'required'
+        ];
     }
 }
