@@ -15,11 +15,18 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        User::create([
             'name' => 'Elias Peralta',
             'email' => 'eliasalberto0505@gmail.com',
-            'dni'=>43438715,
-            'password'=>'password'
+            'dni' => 43438715,
+            'password' => 'password'
         ]);
+        User::create([
+            'name' => 'Generico',
+            'email' => 'generico@gmail.com',
+            'dni' => 12345678,
+            'password' => 'password'
+        ]);
+        $this->call([equipmenetSeed::class]);
     }
 }
