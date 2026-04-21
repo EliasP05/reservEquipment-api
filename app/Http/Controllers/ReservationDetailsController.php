@@ -20,10 +20,12 @@ class ReservationDetailsController extends Controller
     }
     public function store(Reservation $reservation, ReservationDetailsRequest $request)
     {
-        $detail = ReservationService::activeReserve($reservation, $request->validated());
+        $encabezado = ReservationService::activeReserve($reservation);
 
-        if (!$detail) {
+        if (!$encabezado) {
             return response()->json(['message' => 'error', 400]);
+        } else {
+            $detail = ReservationService::adminEquipment($reservation,  $request->validated()['equipments']);
         }
         return response()->json($detail);
     }

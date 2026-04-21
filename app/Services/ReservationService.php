@@ -40,26 +40,9 @@ class ReservationService
 
         return $reservation;
     }
-    public static function activeReserve(Reservation $reservation, array $data)
+    public static function activeReserve(Reservation $reservation)
     {
 
-        $equipments = $data['equipments'];
-        $reservation_id = $data['reserv_id'];
-
-        $equipmentsId = collect($equipments)->map(function ($equipment) {
-            return is_array($equipment) ? $equipment['id'] : $equipment;
-        })->toArray();
-        ReservationDetails::where('reserv_id', $reservation_id)->WhereNotIn('equipment_id', $equipmentsId)->update(['status' => 'ENTREGADO']);
-
-        foreach ($equipments as $equipment) {
-            ReservationDetails::updateOrCreate(
-                [
-                    'reserv_id' => $reservation_id,
-                    'equipment_id' => $equipment,
-                ],
-                ['status' => 'NO ENTREGADO']
-            );
-        }
         //pregunta si el campo de inicio reserva esta vacio que modificque hora y estado
         if (!$reservation->start_reserve) {
             $reservation->update(
@@ -70,7 +53,34 @@ class ReservationService
             );
         }
 
-        return $reservation->details;
+        return $reservation;
+    }
+
+    public static function adminEquipment(Reservation $reservation, array $equipments)
+    {
+
+
+        $equipmentsId = collect($equipments)->map(function ($equipment) {
+            return is_array($equipment) ? $equipment['id'] : $equipment;
+        })->toArray();
+
+        //cambia a estado a ENTREGADO, no vienen del formulario
+        ReservationDetails::where('reserv_id', $reservation->id)
+            ->whereNotIn('equipment_id', $equipmentsId)
+            ->update(['status' => 'ENTREGADO']);
+
+        //cambia a estado a NO ENTREGADO
+
+        foreach ($equipments as $equipment) {
+            ReservationDetails::updateOrCreate(
+                [
+                    'reserv_id' => $reservation->id,
+                    'equipment_id' => $equipment,
+                ],
+                ['status' => 'NO ENTREGADO']
+            );
+        }
+        return ReservationDetails::where('reserv_id', $reservation->id)->get();
     }
 
     public static function endReservation(Reservation $reservation)
