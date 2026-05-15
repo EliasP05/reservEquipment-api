@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Http\Requests\ReservationRequest;
 use App\Models\Reservation;
 use App\Models\ReservationDetails;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ReservationService
 {
@@ -14,18 +16,18 @@ class ReservationService
         $reservations = Reservation::with('user', 'details.equipment')->get();
         return $reservations;
     }
-    public static function getReserve($id)
+    public static function getReserve(Reservation $id)
     {
         $reserve = Reservation::with('user', 'details.equipment')->find($id);
         return $reserve;
     }
-    public static function getReservationsForId($id)
+    public static function getReservationsForId(Reservation $id)
     {
         $details = ReservationDetails::where('reserv_id', $id);
 
         return $details;
     }
-    public static function create($data)
+    public static function create(ReservationRequest $data)
     {
 
         $reservation = Reservation::create($data);
@@ -100,6 +102,44 @@ class ReservationService
         if ($reservation) {
             $reservation->delete();
             return $reservation;
+        }
+    }
+
+
+    //iniciar prestamo sin reserva
+    public static function startLoan(array $data, array $equipments)
+    {
+
+        //usar rol back. insertar reserva, con el id de reserva insertarmos datos ne la tabla detalles
+
+        DB::beginTransaction();
+
+        try {
+
+            $reservation = Reservation::create([
+                'user_id' => $data['user_id'],
+                'title_reserve' => $data['title_reserve'],
+                'description_reserve' => $data['description_reserve'],
+                'date_reserve' => $data['date_reserve'],
+                'hours_reserve' => $data['hours_reserve'],
+                'status' => $data['status']
+            ]);
+            if ($reservation) {
+                foreach ($equipments as $equipment) {
+                    ReservationDetails::create(
+                        [
+                            'reserv_id' => $reservation->id,
+                            'equipment_id' => $equipment['id'],
+                            'status' => 'NO ENTREGADO'
+                        ],
+                    );
+                }
+            }
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e; // o return false para que el controlador devuelva 400
         }
     }
 }
