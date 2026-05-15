@@ -16,18 +16,18 @@ class ReservationService
         $reservations = Reservation::with('user', 'details.equipment')->get();
         return $reservations;
     }
-    public static function getReserve(Reservation $id)
+    public static function getReserve($id)
     {
         $reserve = Reservation::with('user', 'details.equipment')->find($id);
         return $reserve;
     }
-    public static function getReservationsForId(Reservation $id)
+    public static function getReservationsForId($id)
     {
         $details = ReservationDetails::where('reserv_id', $id);
 
         return $details;
     }
-    public static function create(ReservationRequest $data)
+    public static function create($data)
     {
 
         $reservation = Reservation::create($data);
