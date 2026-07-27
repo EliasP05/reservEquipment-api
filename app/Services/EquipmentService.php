@@ -23,7 +23,11 @@ class EquipmentService
     public static function getEquipment()
     {
 
-        $equipments = Equipment::get()->all();
+        //$equipments = Equipment::get()->all();
+
+        $equipments = Equipment::with([
+            'activeLoan.reservation'
+        ])->get();
 
         return $equipments;
     }
