@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Reservation;
 use Illuminate\Foundation\Http\FormRequest;
 
-class EquipmentRequest extends FormRequest
+class LoanRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +22,12 @@ class EquipmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-            'name' => 'required',
-            'detalle' => 'required',
-            'cantidad' => ''
+            'title_reserve' => 'required',
+            'description_reserve' => 'required',
+            'date_reserve' => 'required',
+            'hours_reserve' => 'required',
+            'status' => 'required',
+            'equipments' => 'array',
         ];
     }
 }

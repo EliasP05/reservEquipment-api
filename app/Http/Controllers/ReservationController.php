@@ -17,7 +17,7 @@ class ReservationController extends Controller
         $reservations = ReservationService::getReservations();
 
         if (!$reservations) {
-            return response()->json(['message' => 'error', 404]);
+            return response()->json(['message' => 'No se encontraron reservas.'], 404);
         }
         return response()->json($reservations);
     }
@@ -35,10 +35,13 @@ class ReservationController extends Controller
     // }
     public function store(ReservationRequest $request)
     {
-        $reservation = ReservationService::create($request->validated());
+        // el responsable es siempre el usuario autenticado, no lo define el cliente
+        $reservation = ReservationService::create(
+            array_merge($request->validated(), ['user_id' => $request->user()->id])
+        );
 
         if (!$reservation) {
-            return response()->json(['message' => 'error', 400]);
+            return response()->json(['message' => 'No se pudo crear la reserva.'], 400);
         }
         return response()->json($reservation);
     }
@@ -52,7 +55,7 @@ class ReservationController extends Controller
     {
         $reservation = ReservationService::updateReservation($reservation, $data->validated());
         if (!$reservation) {
-            return response()->json(['message' => 'error', 400]);
+            return response()->json(['message' => 'No se pudo modificar la reserva.'], 400);
         }
         return response()->json($reservation);
     }
@@ -65,7 +68,7 @@ class ReservationController extends Controller
         $reserveDelete = ReservationService::deleteReservation($reservation);
 
         if (!$reserveDelete) {
-            return response()->json(['message' => 'error', 400]);
+            return response()->json(['message' => 'No se pudo eliminar la reserva.'], 400);
         }
         return response()->json($reserveDelete);
     }

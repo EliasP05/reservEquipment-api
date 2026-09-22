@@ -27,4 +27,11 @@ class ReservationDetailsRequest extends FormRequest
             "status"=>"",
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'equipments.required' => 'Seleccione al menos un equipo. Si ya devolvieron todo, use "Terminar reserva".',
+        ];
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoanRequest;
 use App\Http\Requests\ReservationDetailsRequest;
 use App\Http\Requests\ReservationRequest;
 use App\Models\Reservation;
@@ -42,9 +43,11 @@ class ReservationDetailsController extends Controller
 
 
     //metodo reserva+prestamo con rollback
-    public function startLoan(Request $request)
+    public function startLoan(LoanRequest $request)
     {
         $data = $request->except('equipments');
+        // el responsable es siempre el usuario autenticado, no lo define el cliente
+        $data['user_id'] = $request->user()->id;
         $equipments = $request->input('equipments', []);
         $loan = ReservationService::startLoan($data, $equipments);
         // Verificá que llegan bien

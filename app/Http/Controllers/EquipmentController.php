@@ -15,7 +15,7 @@ class EquipmentController extends Controller
         $equipment = EquipmentService::create($request->validated());
 
         if (!$equipment) {
-            return response()->json(['message' => 'error', 404]);
+            return response()->json(['message' => 'No se pudo crear el equipo.'], 400);
         }
         return response()->json($equipment);
     }
@@ -25,7 +25,7 @@ class EquipmentController extends Controller
         $equipments = EquipmentService::getEquipment();
 
         if (!$equipments) {
-            return response()->json(['message' => 'error', 404]);
+            return response()->json(['message' => 'No se encontraron equipos.'], 404);
         }
 
         return response()->json($equipments);
@@ -36,7 +36,7 @@ class EquipmentController extends Controller
         $equipments = EquipmentService::getEquipmentAvailable();
 
         if (!$equipments) {
-            return response()->json(['message' => 'error', 404]);
+            return response()->json(['message' => 'No se encontraron equipos disponibles.'], 404);
         }
         return response()->json($equipments);
     }
@@ -52,7 +52,7 @@ class EquipmentController extends Controller
             return response()->json($updatEquipment);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'No se puede eliminar el registro porque está asociado a una reserva.'
+                'message' => 'No se pudo modificar el registro.'
             ], 400);
         }
     }
@@ -74,6 +74,10 @@ class EquipmentController extends Controller
                     'message' => 'No se puede eliminar el registro porque está asociado a una reserva.'
                 ], 400);
             }
+
+            return response()->json([
+                'message' => 'Ocurrió un error al intentar eliminar el registro.'
+            ], 500);
         }
     }
 }

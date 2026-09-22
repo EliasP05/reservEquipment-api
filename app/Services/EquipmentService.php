@@ -14,6 +14,9 @@ class EquipmentService
     {
 
 
+        // cada equipo es una unidad; la columna cantidad no admite NULL
+        $data['cantidad'] = $data['cantidad'] ?? 1;
+
         $equipment = Equipment::create($data);
 
 

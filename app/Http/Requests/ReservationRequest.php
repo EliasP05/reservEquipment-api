@@ -22,7 +22,6 @@ class ReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required',
             'title_reserve' => 'required',
             'description_reserve' => 'required',
             'date_reserve' => 'required',

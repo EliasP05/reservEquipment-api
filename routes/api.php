@@ -4,7 +4,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationDetailsController;
-use App\Http\Controllers\UserController;
 use App\Models\ReservationDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +20,6 @@ Route::middleware('auth:sanctum')->group(
         Route::get('/me', [AuthController::class, 'me']);
 
 
-        Route::apiResource('/user', UserController::class);
         Route::apiResource('/equipment', EquipmentController::class);
         Route::apiResource('/reservation', ReservationController::class);
         Route::get('/equipmentavailable', [EquipmentController::class, 'getAvailable']);
