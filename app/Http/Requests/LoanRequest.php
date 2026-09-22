@@ -23,7 +23,7 @@ class LoanRequest extends FormRequest
     {
         return [
             'title_reserve' => 'required',
-            'description_reserve' => 'required',
+            'description_reserve' => '',
             'date_reserve' => 'required',
             'hours_reserve' => 'required',
             'status' => 'required',

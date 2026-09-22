@@ -119,7 +119,8 @@ class ReservationService
             $reservation = Reservation::create([
                 'user_id' => $data['user_id'],
                 'title_reserve' => $data['title_reserve'],
-                'description_reserve' => $data['description_reserve'],
+                // description_reserve ya no es obligatorio; la columna no admite NULL
+                'description_reserve' => $data['description_reserve'] ?? '',
                 'date_reserve' => $data['date_reserve'],
                 'hours_reserve' => $data['hours_reserve'],
                 'status' => $data['status']
